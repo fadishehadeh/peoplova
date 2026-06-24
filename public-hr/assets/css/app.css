@@ -3,12 +3,18 @@ body { font-family: Inter, Arial, sans-serif; background: var(--surface-muted); 
 .app-body { background: radial-gradient(circle at top left, rgba(255,61,51,.08), transparent 28rem), linear-gradient(180deg, #fff 0, var(--surface-muted) 16rem); }
 a { color: var(--brand-primary); }
 a:hover { color: var(--brand-primary-dark); }
-.auth-body { background: linear-gradient(135deg, var(--brand-primary), #ff6f67); }
+.auth-body { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--brand-primary) 0%, #b44fdf 60%, #ff6f67 100%); }
+.auth-outer { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+.auth-inner { width: 100%; max-width: 460px; }
+.auth-brand-mark { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: .35rem; }
+.auth-mark-img { height: 1.4rem; width: auto; }
+.auth-mark-name { font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: -.01em; }
+.auth-brand-tagline { text-align: center; color: rgba(255,255,255,.72); font-size: .82rem; margin-bottom: 1.5rem; }
+.auth-form-card { border-radius: 1.25rem; border: none; box-shadow: 0 1.5rem 3rem rgba(0,0,0,.18); background: #fff; }
+.auth-page-footer { text-align: center; color: rgba(255,255,255,.55); font-size: .74rem; margin-top: 1.25rem; margin-bottom: 0; }
+.auth-logo { max-width: 48px; width: 100%; height: auto; display: block; margin: 0 auto 1.5rem auto; }
 .auth-brand-panel { background: linear-gradient(135deg, var(--brand-primary), #ff6f67); display: flex; align-items: center; justify-content: center; }
 .auth-brand-copy { max-width: 540px; text-align: center; }
-.auth-logo { max-width: 48px; width: 100%; height: auto; display: block; margin: 0 auto 1.5rem auto; }
-.auth-card-wrapper { max-width: 460px; padding: 2rem; }
-.auth-form-card { border-radius: 1rem; border: 1px solid #fecaca; box-shadow: var(--shadow-soft); }
 .app-shell { display: flex; min-height: 100vh; }
 .sidebar { width: 250px; background: linear-gradient(180deg, var(--brand-primary) 0%, #ec352d 56%, #cf2d27 100%); color: #fff; display: flex; flex-direction: column; padding: 1rem .75rem; position: fixed; top: 0; left: 0; bottom: 0; z-index: 1040; transition: transform .3s ease; overflow: hidden; box-shadow: .5rem 0 1.75rem rgba(127,29,29,.18); }
 .sidebar::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(135deg, rgba(255,255,255,.11) 0 1px, transparent 1px 12px), linear-gradient(45deg, rgba(255,255,255,.06) 0 1px, transparent 1px 18px), linear-gradient(180deg, rgba(255,255,255,.12), transparent 14rem); background-size: 18px 18px, 24px 24px, auto; opacity: .42; pointer-events: none; }
