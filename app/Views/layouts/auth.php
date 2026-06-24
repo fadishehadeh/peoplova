@@ -30,18 +30,6 @@
 
             <?= $content; ?>
 
-            <div class="auth-quick-links">
-                <a href="<?= e(url('/dashboard')); ?>" class="auth-quick-link">
-                    <i class="bi bi-grid-fill"></i> HR Portal
-                </a>
-                <a href="<?= e(url('/leave/request')); ?>" class="auth-quick-link">
-                    <i class="bi bi-calendar-plus"></i> Request Leave
-                </a>
-                <a href="<?= e(url('/careers')); ?>" class="auth-quick-link">
-                    <i class="bi bi-briefcase-fill"></i> Careers
-                </a>
-            </div>
-
             <p class="auth-page-footer">
                 &copy; <?= date('Y'); ?> <?= e(\App\Support\Branding::name()); ?> &mdash; All rights reserved.
             </p>
