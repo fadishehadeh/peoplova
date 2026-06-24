@@ -7,7 +7,10 @@ a:hover { color: var(--brand-primary-dark); }
 .auth-outer { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
 .auth-inner { width: 100%; max-width: 460px; }
 .auth-brand-mark { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: .35rem; }
-.auth-mark-img { height: 1.4rem; width: auto; }
+.auth-mark-img { height: 2.8rem; width: auto; }
+.auth-quick-links { display: flex; justify-content: center; gap: .5rem; flex-wrap: wrap; margin-top: 1.1rem; }
+.auth-quick-link { display: inline-flex; align-items: center; gap: .35rem; padding: .38rem .8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.28); color: rgba(255,255,255,.85); font-size: .76rem; font-weight: 600; text-decoration: none !important; background: rgba(255,255,255,.1); transition: background .15s, color .15s, border-color .15s; }
+.auth-quick-link:hover { background: rgba(255,255,255,.2); color: #fff; border-color: rgba(255,255,255,.45); }
 .auth-mark-name { font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: -.01em; }
 .auth-brand-tagline { text-align: center; color: rgba(255,255,255,.72); font-size: .82rem; margin-bottom: 1.5rem; }
 .auth-form-card { border-radius: 1.25rem; border: none; box-shadow: 0 1.5rem 3rem rgba(0,0,0,.18); background: #fff; }

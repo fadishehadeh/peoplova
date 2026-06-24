@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#FF3D33">
     <title><?= e($title ?? \App\Support\Branding::name()); ?></title>
     <link href="<?= e(asset('css/bootstrap.min.css')); ?>" rel="stylesheet">
+    <link href="<?= e(asset('css/bootstrap-icons.min.css')); ?>" rel="stylesheet">
     <link href="<?= e(asset('css/app.css')); ?>" rel="stylesheet">
     <?php $__bc = \App\Support\Branding::brandColor(); if ($__bc !== '' && $__bc !== '#ff3d33'): ?>
     <style>:root { --brand-primary: <?= e($__bc); ?>; }</style>
@@ -28,6 +29,18 @@
             <?php require base_path('app/Views/partials/flash.php'); ?>
 
             <?= $content; ?>
+
+            <div class="auth-quick-links">
+                <a href="<?= e(url('/')); ?>" class="auth-quick-link">
+                    <i class="bi bi-grid-fill"></i> HR Portal
+                </a>
+                <a href="<?= e(url('/leave/request')); ?>" class="auth-quick-link">
+                    <i class="bi bi-calendar-plus"></i> Request Leave
+                </a>
+                <a href="https://careers.peoplova.com" class="auth-quick-link" target="_blank" rel="noopener">
+                    <i class="bi bi-briefcase-fill"></i> Careers
+                </a>
+            </div>
 
             <p class="auth-page-footer">
                 &copy; <?= date('Y'); ?> <?= e(\App\Support\Branding::name()); ?> &mdash; All rights reserved.
