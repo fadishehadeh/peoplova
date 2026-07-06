@@ -15,7 +15,7 @@ final class LandingController extends Controller
     {
         $contactEmail = $this->contactEmail();
         $mailTo = $contactEmail !== ''
-            ? 'mailto:' . rawurlencode($contactEmail) . '?subject=' . rawurlencode('HR Platform Inquiry')
+            ? 'mailto:' . $contactEmail . '?subject=' . rawurlencode('HR Platform Inquiry')
             : null;
 
         $this->render('marketing.landing', [

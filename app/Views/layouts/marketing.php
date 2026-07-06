@@ -2,8 +2,8 @@
 $canonicalUrl = rtrim(url('/'), '/') . '/';
 $ogImage      = url('/assets/images/peoplova-og.png');
 $pageTitle    = $title ?? (\App\Support\Branding::name() . ' — HR Operations Platform for People-Led Teams');
-$pageDesc     = $metaDescription ?? 'Peoplova is an implementation-led HR operations platform that centralises employee records, leave, documents, onboarding, offboarding, and recruitment into one structured workspace — delivered through a guided rollout.';
-$pageKeywords = $metaKeywords ?? 'HR platform, HR software, people operations, employee management system, leave management, HR onboarding software, offboarding, HR document management, HR reporting, HRIS, HR operations, workforce management';
+$pageDesc     = $metaDescription ?? 'Peoplova is an implementation-led HR operations platform that centralises employee records, leave, documents, onboarding, offboarding, and recruitment into one structured workspace — delivered through a guided rollout. Built for GCC and Arab World organizations.';
+$pageKeywords = $metaKeywords ?? 'HR platform Qatar, HR software UAE, Gulf HR platform, HR system GCC, people operations, employee management system, leave management Gulf, HR onboarding software, HRIS Arabic, نظام موارد بشرية, HR software Middle East, workforce management Qatar';
 ?>
 <!doctype html>
 <html lang="en" prefix="og: https://ogp.me/ns#">

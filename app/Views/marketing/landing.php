@@ -20,6 +20,7 @@ if (!empty($contactEmail)) {
         <nav class="marketing-nav-links" aria-label="Site navigation">
             <a href="#capabilities">Features</a>
             <a href="#why-hr-leaders">Why us</a>
+            <a href="#pricing">Pricing</a>
             <a href="#contact">Contact</a>
         </nav>
         <div class="marketing-nav-actions">
@@ -35,14 +36,15 @@ if (!empty($contactEmail)) {
                 <div class="col-lg-6">
                     <span class="marketing-kicker">Implementation-led HR platform</span>
                     <h1 class="marketing-title"><?= e($productName); ?> gives HR leaders one operational system to run people workflows with clarity.</h1>
+                    <p class="marketing-subtitle text-muted" style="font-size:1.05rem;margin-bottom:.75rem;">Built for HR teams in the Gulf and Arab world — Arabic-ready, Gulf leave structures, and implementation that matches your regional process.</p>
                     <p class="marketing-copy">
-                        Centralize employee records, approvals, leave, onboarding, offboarding, documents, and hiring in one structured workspace.
-                        <?= e($productName); ?> is delivered through a guided rollout, so the setup matches your structure, access model, and internal process expectations.
+                        One operational system for employee records, leave, documents, onboarding, and hiring — delivered through a guided rollout aligned to your structure.
                     </p>
                     <div class="marketing-hero-actions">
                         <a href="#contact" class="btn btn-primary btn-lg">Get in Touch</a>
                         <a href="#capabilities" class="btn btn-outline-light btn-lg">See Features</a>
                     </div>
+                    <p class="text-center text-muted mt-3" style="font-size:1rem;direction:rtl;font-family:inherit;" lang="ar">منصة عمليات الموارد البشرية للمؤسسات في الخليج العربي</p>
                     <div class="marketing-proof-grid">
                         <div class="marketing-proof-card">
                             <strong>One source of truth</strong>
@@ -85,15 +87,15 @@ if (!empty($contactEmail)) {
                                     <div class="marketing-ui-summary">
                                         <article>
                                             <small>Active employees</small>
-                                            <strong>248</strong>
+                                            <strong>120</strong>
                                         </article>
                                         <article>
                                             <small>Pending approvals</small>
-                                            <strong>19</strong>
+                                            <strong>8</strong>
                                         </article>
                                         <article>
                                             <small>Expiring documents</small>
-                                            <strong>07</strong>
+                                            <strong>04</strong>
                                         </article>
                                     </div>
                                     <div class="marketing-ui-grid">
@@ -154,6 +156,12 @@ if (!empty($contactEmail)) {
                     <strong>Built for leaders who need better control, visibility, and cleaner execution.</strong>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="marketing-section py-3" style="border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);">
+        <div class="container text-center">
+            <p class="text-muted mb-0" style="font-size:.92rem;">Built on a live HR system managing employees across multiple companies in the MENA region.</p>
         </div>
     </section>
 
@@ -248,6 +256,63 @@ if (!empty($contactEmail)) {
         </div>
     </section>
 
+    <section class="marketing-section" id="pricing">
+        <div class="container">
+            <div class="marketing-section-heading">
+                <span>Pricing</span>
+                <h2>Straightforward Pricing</h2>
+                <p>One implementation fee. Monthly per-seat pricing. No hidden costs.</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                    <div class="marketing-module-card h-100 d-flex flex-column">
+                        <div class="marketing-module-icon"><i class="bi bi-rocket-takeoff"></i></div>
+                        <h3>Starter</h3>
+                        <p class="text-muted" style="font-size:.85rem;">Up to 50 employees</p>
+                        <p class="fw-semibold mb-1">Contact for pricing</p>
+                        <ul class="marketing-checklist mt-2 mb-3" style="font-size:.9rem;">
+                            <li>Core HR modules</li>
+                            <li>Employee records &amp; leave</li>
+                            <li>Document management</li>
+                            <li>Guided rollout included</li>
+                        </ul>
+                        <a href="#contact" class="btn btn-outline-light btn-sm mt-auto">Get a Quote</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="marketing-module-card h-100 d-flex flex-column" style="border-color:var(--mk-accent,#8154FF);box-shadow:0 0 0 2px var(--mk-accent,#8154FF);">
+                        <div class="marketing-module-icon"><i class="bi bi-graph-up"></i></div>
+                        <h3>Growth</h3>
+                        <p class="text-muted" style="font-size:.85rem;">51–200 employees</p>
+                        <p class="fw-semibold mb-1">Contact for pricing</p>
+                        <ul class="marketing-checklist mt-2 mb-3" style="font-size:.9rem;">
+                            <li>All modules included</li>
+                            <li>Arabic UI support</li>
+                            <li>Onboarding &amp; recruitment</li>
+                            <li>Multi-branch structure</li>
+                        </ul>
+                        <a href="#contact" class="btn btn-primary btn-sm mt-auto">Get a Quote</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="marketing-module-card h-100 d-flex flex-column">
+                        <div class="marketing-module-icon"><i class="bi bi-buildings"></i></div>
+                        <h3>Enterprise</h3>
+                        <p class="text-muted" style="font-size:.85rem;">200+ employees</p>
+                        <p class="fw-semibold mb-1">Custom</p>
+                        <ul class="marketing-checklist mt-2 mb-3" style="font-size:.9rem;">
+                            <li>Full configuration</li>
+                            <li>Dedicated support</li>
+                            <li>Custom workflows</li>
+                            <li>Priority implementation</li>
+                        </ul>
+                        <a href="#contact" class="btn btn-outline-light btn-sm mt-auto">Get a Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="marketing-section marketing-preview-band">
         <div class="container">
             <div class="marketing-preview-grid">
@@ -327,3 +392,17 @@ if (!empty($contactEmail)) {
         </div>
     </section>
 </main>
+
+<footer class="marketing-footer" style="background:#0d0d0d;border-top:1px solid rgba(255,255,255,.08);padding:2rem 0;margin-top:0;">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <span class="text-muted" style="font-size:.88rem;">&copy; <?= e(date('Y')); ?> <?= e($productName); ?> &mdash; HR Operations Platform</span>
+        <div class="d-flex align-items-center gap-3">
+            <a href="mailto:hello@peoplova.com" class="text-muted text-decoration-none" style="font-size:.88rem;">
+                <i class="bi bi-envelope me-1"></i>hello@peoplova.com
+            </a>
+            <a href="https://linkedin.com/company/peoplova" target="_blank" rel="noopener noreferrer" class="text-muted text-decoration-none" style="font-size:.88rem;" aria-label="Peoplova on LinkedIn">
+                <i class="bi bi-linkedin me-1"></i>LinkedIn
+            </a>
+        </div>
+    </div>
+</footer>
