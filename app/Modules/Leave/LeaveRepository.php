@@ -501,7 +501,7 @@ final class LeaveRepository
 
         $this->database->transaction(function (Database $database) use ($employee, $actorUserId, $comments): void {
             $requestId = (int) $employee['id'];
-            $approval = $this->pendingApproval($requestId);
+            $approval = $this->pendingApproval((int) $requestId);
 
             if ($approval !== null) {
                 $this->markApproval($database, (int) $approval['id'], 'approved', $actorUserId, $comments);
@@ -529,7 +529,7 @@ final class LeaveRepository
         }
 
         $this->database->transaction(function (Database $database) use ($request, $actorUserId, $comments): void {
-            $approval = $this->pendingApproval($request['id']);
+            $approval = $this->pendingApproval((int) $request['id']);
 
             if ($approval !== null) {
                 $this->markApproval($database, (int) $approval['id'], 'approved', $actorUserId, $comments);
@@ -2363,7 +2363,7 @@ final class LeaveRepository
     private function rejectRequest(int $requestId, ?int $actorUserId, string $reason): void
     {
         $this->database->transaction(function (Database $database) use ($requestId, $actorUserId, $reason): void {
-            $approval = $this->pendingApproval($requestId);
+            $approval = $this->pendingApproval((int) $requestId);
 
             if ($approval !== null) {
                 $this->markApproval($database, (int) $approval['id'], 'rejected', $actorUserId, $reason);
