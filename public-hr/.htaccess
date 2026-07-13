@@ -4,3 +4,14 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^ index.php [QSA,L]
 </IfModule>
+
+# Prevent LiteSpeed/proxy from caching any PHP response
+<FilesMatch "\.php$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+</FilesMatch>
+
+# LiteSpeed cache bypass for all dynamic pages
+<IfModule LiteSpeed>
+    CacheDisable public /
+</IfModule>
