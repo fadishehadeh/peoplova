@@ -2,6 +2,7 @@
 <?php
 $teamMembers = (int) ($stats['teamMembers'] ?? 0);
 $pendingApprovals = (int) ($stats['pendingApprovals'] ?? 0);
+$pendingLetters = (int) ($stats['pendingLetters'] ?? 0);
 
 $attentionItems = [
     [
@@ -11,6 +12,14 @@ $attentionItems = [
         'icon' => 'bi-check2-square',
         'tone' => $pendingApprovals > 0 ? 'warning' : 'calm',
         'note' => $pendingApprovals > 0 ? 'Your team is waiting on manager review.' : 'No pending team approvals right now.',
+    ],
+    [
+        'label' => 'Letter requests pending generation',
+        'value' => $pendingLetters,
+        'href' => url('/letters/all'),
+        'icon' => 'bi-envelope-paper',
+        'tone' => $pendingLetters > 0 ? 'warning' : 'calm',
+        'note' => $pendingLetters > 0 ? 'Letters are waiting to be generated.' : 'No pending letter requests.',
     ],
     [
         'label' => 'Direct reports in your team',
@@ -67,11 +76,11 @@ $attentionItems = [
         </a>
     </div>
     <div class="col-md-4">
-        <a href="<?= e(url('/leave/calendar')); ?>" class="card dashboard-card text-decoration-none">
+        <a href="<?= e(url('/letters/all')); ?>" class="card dashboard-card text-decoration-none">
             <div class="card-body">
-                <span>Planning View</span>
-                <h3><?= e((string) $teamMembers); ?></h3>
-                <small class="text-muted">Use the calendar to plan upcoming absences</small>
+                <span>Pending Letters</span>
+                <h3><?= e((string) $pendingLetters); ?></h3>
+                <small class="text-muted">Letter requests awaiting generation</small>
             </div>
         </a>
     </div>

@@ -2,10 +2,19 @@
 <?php
 $headcount = (int) ($stats['headcount'] ?? 0);
 $pendingApprovals = (int) ($stats['pendingApprovals'] ?? 0);
+$pendingLetters = (int) ($stats['pendingLetters'] ?? 0);
 $onboardingOpen = (int) ($stats['onboardingOpen'] ?? 0);
 $documentsExpiring = (int) ($stats['documentsExpiring'] ?? 0);
 
 $attentionItems = [
+    [
+        'label' => 'Letter requests pending generation',
+        'value' => $pendingLetters,
+        'href' => url('/letters/all'),
+        'icon' => 'bi-envelope-paper',
+        'tone' => $pendingLetters > 0 ? 'warning' : 'calm',
+        'note' => $pendingLetters > 0 ? 'Letters are waiting to be generated.' : 'No pending letter requests.',
+    ],
     [
         'label' => 'Pending leave approvals',
         'value' => $pendingApprovals,

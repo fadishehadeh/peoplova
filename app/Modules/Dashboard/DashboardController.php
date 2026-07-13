@@ -42,6 +42,7 @@ final class DashboardController extends Controller
         $stats = [
             'headcount' => 0,
             'pendingApprovals' => 0,
+            'pendingLetters' => 0,
             'onboardingOpen' => 0,
             'documentsExpiring' => 0,
             'teamMembers' => 0,
@@ -86,6 +87,13 @@ final class DashboardController extends Controller
             if (in_array($user['role_code'] ?? '', ['super_admin', 'hr_only'], true)) {
                 $stats['pendingApprovals'] = (int) $db->fetchValue(
                     "SELECT COUNT(*) FROM leave_requests WHERE status IN ('pending_manager','pending_hr')"
+                );
+            }
+
+            // Pending letter requests — visible to HR, super_admin, and manager roles
+            if (in_array($user['role_code'] ?? '', ['super_admin', 'hr_only', 'manager'], true)) {
+                $stats['pendingLetters'] = (int) $db->fetchValue(
+                    "SELECT COUNT(*) FROM letter_requests WHERE status = 'pending'"
                 );
             }
         } catch (Throwable $throwable) {

@@ -2,6 +2,7 @@
 <?php
 $headcount = (int) ($stats['headcount'] ?? 0);
 $pendingApprovals = (int) ($stats['pendingApprovals'] ?? 0);
+$pendingLetters = (int) ($stats['pendingLetters'] ?? 0);
 $onboardingOpen = (int) ($stats['onboardingOpen'] ?? 0);
 $documentsExpiring = (int) ($stats['documentsExpiring'] ?? 0);
 $latestBackupStatus = (string) ($backupOverview['status'] ?? 'unknown');
@@ -16,6 +17,14 @@ $attentionItems = [
         'icon' => 'bi-hourglass-split',
         'tone' => $pendingApprovals > 0 ? 'warning' : 'calm',
         'note' => $pendingApprovals > 0 ? 'Approval activity needs review across the platform.' : 'No leave approvals are waiting.',
+    ],
+    [
+        'label' => 'Letter requests pending generation',
+        'value' => $pendingLetters,
+        'href' => url('/letters/all'),
+        'icon' => 'bi-envelope-paper',
+        'tone' => $pendingLetters > 0 ? 'warning' : 'calm',
+        'note' => $pendingLetters > 0 ? 'Letters are waiting to be generated.' : 'No pending letter requests.',
     ],
     [
         'label' => 'Open onboarding records',
