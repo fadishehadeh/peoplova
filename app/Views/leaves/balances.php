@@ -25,7 +25,7 @@
             <form method="get" action="<?= e(url('/leave/balances')); ?>" class="row g-3 align-items-end col-12">
                 <div class="col-lg-5"><label class="form-label">Search</label><input type="text" name="q" class="form-control" placeholder="Employee, email, company, or department..." value="<?= e((string) ($search ?? '')); ?>"></div>
                 <div class="col-md-3 col-lg-2"><label class="form-label">Year</label><input type="number" name="year" id="filterYear" class="form-control" min="2000" max="2100" value="<?= e((string) ($year ?? date('Y'))); ?>"></div>
-                <div class="col-md-3 col-lg-2"><label class="form-label">Status</label><input type="text" class="form-control" value="Active only" disabled></div>
+                <div class="col-md-3 col-lg-2"><label class="form-label">Status</label><select name="status" class="form-select"><option value="all" <?= ($status ?? 'all') === 'all' ? 'selected' : ''; ?>>All employees</option><option value="active" <?= ($status ?? 'all') === 'active' ? 'selected' : ''; ?>>Active only</option></select></div>
                 <div class="col-lg-2 d-flex gap-2"><button type="submit" class="btn btn-outline-secondary w-100">Filter</button><a href="<?= e(url('/leave/balances')); ?>" class="btn btn-outline-light border w-100">Reset</a></div>
             </form>
 

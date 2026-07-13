@@ -501,14 +501,30 @@ final class LeaveRepository
 
         $this->database->transaction(function (Database $database) use ($employee, $actorUserId, $comments): void {
             $requestId = (int) $employee['id'];
-            $approval = $this->pendingApproval((int) $requestId);
+            $approval = $this->pendingApproval($requestId);
 
             if ($approval !== null) {
                 $this->markApproval($database, (int) $approval['id'], 'approved', $actorUserId, $comments);
             }
 
-            $this->finalizeApproval($database, $employee);
-            $this->notifyLeaveDecision((int) $employee['employee_id'], $requestId, 'approved');
+            // Advance to HR approval stage instead of finalizing
+            $nextStepOrder = ($approval !== null ? (int) $approval['step_order'] : 1) + 1;
+
+            $database->execute(
+                'UPDATE leave_requests SET status = :status, current_step_order = :step WHERE id = :id',
+                ['status' => 'pending_hr', 'step' => $nextStepOrder, 'id' => $requestId]
+            );
+
+            $database->execute(
+                'INSERT INTO leave_approvals (leave_request_id, step_order, approver_user_id, approver_role_id, decision)
+                 VALUES (:leave_request_id, :step_order, NULL, :approver_role_id, :decision)',
+                [
+                    'leave_request_id' => $requestId,
+                    'step_order'       => $nextStepOrder,
+                    'approver_role_id' => $this->hrAdminRoleId(),
+                    'decision'         => 'pending',
+                ]
+            );
         });
     }
 
@@ -1435,7 +1451,7 @@ final class LeaveRepository
         return $this->database->fetchAll(
             "SELECT id, joining_date, CONCAT_WS(' ', first_name, middle_name, last_name) AS employee_name, employee_code
              FROM employees
-             WHERE employee_status = 'active' AND archived_at IS NULL
+             WHERE archived_at IS NULL
              ORDER BY first_name ASC, last_name ASC"
         );
     }

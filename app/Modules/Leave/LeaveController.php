@@ -230,7 +230,7 @@ final class LeaveController extends Controller
         $scope = $this->leaveScope();
         $search = trim((string) $request->input('q', ''));
         $year = $this->normalizeYear((string) $request->input('year', (string) date('Y')));
-        $status = 'active';
+        $status = $request->input('status', 'all') === 'active' ? 'active' : 'all';
         $page = max(1, (int) $request->input('page', 1));
         $perPage = 25;
         $balances = [];

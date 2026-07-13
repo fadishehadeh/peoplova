@@ -605,7 +605,7 @@ final class EmployeeController extends Controller
 
     private function validate(array $data, string $redirectPath): bool
     {
-        foreach (['company_id', 'first_name', 'last_name', 'work_email', 'employment_type'] as $field) {
+        foreach (['company_id', 'first_name', 'last_name', 'employment_type'] as $field) {
             if (($data[$field] ?? '') === '') {
                 $this->app->session()->flash('error', 'Please complete all required employee fields.');
                 $this->app->session()->flash('old_input', $data);
@@ -613,7 +613,7 @@ final class EmployeeController extends Controller
             }
         }
 
-        if (!filter_var((string) $data['work_email'], FILTER_VALIDATE_EMAIL)) {
+        if (($data['work_email'] ?? '') !== '' && !filter_var((string) $data['work_email'], FILTER_VALIDATE_EMAIL)) {
             $this->app->session()->flash('error', 'Please provide a valid work email address.');
             $this->app->session()->flash('old_input', $data);
             $this->redirect($redirectPath);
