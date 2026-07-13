@@ -546,6 +546,72 @@ final class StructureController extends Controller
         );
     }
 
+    public function deleteCompany(Request $request, string $id): void
+    {
+        $this->performDelete($request, '/admin/companies', function () use ($id): void {
+            $this->repository->deleteCompany((int) $id);
+        }, 'Company deleted.');
+    }
+
+    public function deleteBranch(Request $request, string $id): void
+    {
+        $this->performDelete($request, '/admin/branches', function () use ($id): void {
+            $this->repository->deleteRecord('branches', (int) $id);
+        }, 'Branch deleted.');
+    }
+
+    public function deleteDepartment(Request $request, string $id): void
+    {
+        $this->performDelete($request, '/admin/departments', function () use ($id): void {
+            $this->repository->deleteRecord('departments', (int) $id);
+        }, 'Department deleted.');
+    }
+
+    public function deleteTeam(Request $request, string $id): void
+    {
+        $this->performDelete($request, '/admin/teams', function () use ($id): void {
+            $this->repository->deleteRecord('teams', (int) $id);
+        }, 'Team deleted.');
+    }
+
+    public function deleteJobTitle(Request $request, string $id): void
+    {
+        $this->performDelete($request, '/admin/job-titles', function () use ($id): void {
+            $this->repository->deleteRecord('job_titles', (int) $id);
+        }, 'Job title deleted.');
+    }
+
+    public function deleteDesignation(Request $request, string $id): void
+    {
+        $this->performDelete($request, '/admin/designations', function () use ($id): void {
+            $this->repository->deleteRecord('designations', (int) $id);
+        }, 'Designation deleted.');
+    }
+
+    public function deleteReportingLine(Request $request, string $id): void
+    {
+        $this->performDelete($request, '/admin/reporting-lines', function () use ($id): void {
+            $this->repository->deleteReportingLine((int) $id);
+        }, 'Reporting line deleted.');
+    }
+
+    private function performDelete(Request $request, string $redirect, callable $callback, string $successMessage): void
+    {
+        if (!$this->app->csrf()->validate((string) $request->input('_token'))) {
+            $this->app->session()->flash('error', 'Invalid form submission token.');
+            $this->redirect($redirect);
+        }
+
+        try {
+            $callback();
+            $this->app->session()->flash('success', $successMessage);
+        } catch (Throwable $throwable) {
+            $this->app->session()->flash('error', 'Unable to delete record: ' . $throwable->getMessage());
+        }
+
+        $this->redirect($redirect);
+    }
+
     private function renderManagePage(Request $request, string $section, string $title, string $description, array $columns, array $formFields, callable $loader, array $extraViewData = []): void
     {
         $search = trim((string) $request->input('q', ''));

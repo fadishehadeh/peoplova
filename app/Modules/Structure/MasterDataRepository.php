@@ -458,6 +458,30 @@ final class MasterDataRepository
         );
     }
 
+    public function deleteRecord(string $table, int $id): void
+    {
+        $this->database->execute("DELETE FROM {$table} WHERE id = :id", ['id' => $id]);
+    }
+
+    public function deleteCompany(int $id): void
+    {
+        $this->database->execute('DELETE FROM companies WHERE id = :id', ['id' => $id]);
+    }
+
+    public function deleteReportingLine(int $id): void
+    {
+        $employeeId = (int) $this->database->fetchValue(
+            'SELECT employee_id FROM employee_reporting_lines WHERE id = :id',
+            ['id' => $id]
+        );
+
+        $this->database->execute('DELETE FROM employee_reporting_lines WHERE id = :id', ['id' => $id]);
+
+        if ($employeeId > 0) {
+            $this->syncPrimaryManager($employeeId);
+        }
+    }
+
     private function nullableString(mixed $value): ?string
     {
         if ($value === null) {

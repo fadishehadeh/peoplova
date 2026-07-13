@@ -81,7 +81,7 @@
                                 <?php foreach ($columns as $label): ?>
                                     <th><?= e($label); ?></th>
                                 <?php endforeach; ?>
-                                <?php if (($activeSection ?? '') === 'companies' || $supportsEdit): ?>
+                                <?php if (($activeSection ?? '') === 'companies' || $supportsEdit || ($activeSection ?? '') === 'reporting_lines'): ?>
                                     <th></th>
                                 <?php endif; ?>
                             </tr>
@@ -109,8 +109,24 @@
                                         </td>
                                     <?php endforeach; ?>
                                     <?php if (($activeSection ?? '') === 'companies' && isset($item['id'])): ?>
-                                        <td data-label="Action" class="mobile-action-group"><a href="<?= e(url('/admin/companies/' . (int) $item['id'])); ?>" class="btn btn-outline-primary btn-sm"><i class="bi bi-gear"></i> Manage</a></td>
+                                        <td data-label="Action" class="mobile-action-group">
+                                            <a href="<?= e(url('/admin/companies/' . (int) $item['id'])); ?>" class="btn btn-outline-primary btn-sm"><i class="bi bi-gear"></i> Manage</a>
+                                            <form method="post" action="<?= e(url('/admin/companies/' . (int) $item['id'] . '/delete')); ?>" class="d-inline" onsubmit="return confirm('Delete company <?= e(addslashes((string) ($item['name'] ?? ''))); ?>? This cannot be undone.');">
+                                                <?= csrf_field(); ?>
+                                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                        </td>
                                     <?php elseif ($supportsEdit && isset($item['id'])): ?>
+                                        <?php
+                                        $deleteUrl = match($activeSection ?? '') {
+                                            'branches'      => '/admin/branches/',
+                                            'departments'   => '/admin/departments/',
+                                            'teams'         => '/admin/teams/',
+                                            'job_titles'    => '/admin/job-titles/',
+                                            'designations'  => '/admin/designations/',
+                                            default         => null,
+                                        };
+                                        ?>
                                         <td data-label="Action" class="mobile-action-group">
                                             <button
                                                 type="button"
@@ -124,6 +140,19 @@
                                             >
                                                 <i class="bi bi-pencil"></i>
                                             </button>
+                                            <?php if ($deleteUrl !== null): ?>
+                                            <form method="post" action="<?= e(url($deleteUrl . (int) $item['id'] . '/delete')); ?>" class="d-inline" onsubmit="return confirm('Delete <?= e(addslashes((string) ($item['name'] ?? 'this record'))); ?>? This cannot be undone.');">
+                                                <?= csrf_field(); ?>
+                                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                            <?php endif; ?>
+                                        </td>
+                                    <?php elseif (($activeSection ?? '') === 'reporting_lines' && isset($item['id'])): ?>
+                                        <td data-label="Action" class="mobile-action-group">
+                                            <form method="post" action="<?= e(url('/admin/reporting-lines/' . (int) $item['id'] . '/delete')); ?>" class="d-inline" onsubmit="return confirm('Delete this reporting line? This cannot be undone.');">
+                                                <?= csrf_field(); ?>
+                                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                            </form>
                                         </td>
                                     <?php endif; ?>
                                 </tr>

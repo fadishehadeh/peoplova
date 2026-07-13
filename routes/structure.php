@@ -40,3 +40,10 @@ $router->post('/admin/designations', [StructureController::class, 'storeDesignat
 $router->post('/admin/designations/{id}/update', [StructureController::class, 'updateDesignation'], $adminStructureMiddleware);
 $router->get('/admin/reporting-lines', [StructureController::class, 'reportingLines'], $adminStructureMiddleware);
 $router->post('/admin/reporting-lines', [StructureController::class, 'storeReportingLine'], $adminStructureMiddleware);
+$router->post('/admin/reporting-lines/{id}/delete', [StructureController::class, 'deleteReportingLine'], $adminStructureMiddleware);
+$router->post('/admin/companies/{id}/delete', [StructureController::class, 'deleteCompany'], $adminStructureMiddleware);
+$router->post('/admin/branches/{id}/delete', [StructureController::class, 'deleteBranch'], $adminStructureMiddleware);
+$router->post('/admin/departments/{id}/delete', [StructureController::class, 'deleteDepartment'], $adminStructureMiddleware);
+$router->post('/admin/teams/{id}/delete', [StructureController::class, 'deleteTeam'], $adminStructureMiddleware);
+$router->post('/admin/job-titles/{id}/delete', [StructureController::class, 'deleteJobTitle'], $adminStructureMiddleware);
+$router->post('/admin/designations/{id}/delete', [StructureController::class, 'deleteDesignation'], $adminStructureMiddleware);
