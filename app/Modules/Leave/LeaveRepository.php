@@ -2986,4 +2986,27 @@ final class LeaveRepository
             error_log('Failed to notify replacement employee: ' . $e->getMessage());
         }
     }
+
+    public function seedEmployeeLeaveBalances(int $employeeId, int $year): void
+    {
+        $leaveTypes = $this->database->fetchAll(
+            "SELECT id, default_days FROM leave_types WHERE status = 'active' AND default_days > 0"
+        );
+
+        foreach ($leaveTypes as $lt) {
+            $days = (float) $lt['default_days'];
+            $exists = $this->database->fetchValue(
+                'SELECT id FROM leave_balances WHERE employee_id = :eid AND leave_type_id = :ltid AND balance_year = :year LIMIT 1',
+                ['eid' => $employeeId, 'ltid' => $lt['id'], 'year' => $year]
+            );
+
+            if ($exists === null) {
+                $this->database->execute(
+                    'INSERT INTO leave_balances (employee_id, leave_type_id, balance_year, opening_balance, accrued, used_amount, adjusted_amount, carry_forward_amount, closing_balance)
+                     VALUES (:eid, :ltid, :year, :days, 0, 0, 0, 0, :days)',
+                    ['eid' => $employeeId, 'ltid' => $lt['id'], 'year' => $year, 'days' => $days]
+                );
+            }
+        }
+    }
 }

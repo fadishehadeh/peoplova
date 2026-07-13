@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Employees;
 
 use App\Core\Database;
+use App\Modules\Leave\LeaveRepository;
 
 final class EmployeeRepository
 {
@@ -437,6 +438,9 @@ final class EmployeeRepository
             );
 
             $employeeId = (int) $database->lastInsertId();
+
+            (new LeaveRepository($database))->seedEmployeeLeaveBalances($employeeId, (int) date('Y'));
+
             $this->insertHistoryLog($database, $employeeId, $actorId, 'created', null, null, 'Employee record created.');
             $this->insertStatusHistory(
                 $database,
