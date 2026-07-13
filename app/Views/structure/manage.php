@@ -191,8 +191,8 @@
                         <label class="form-label">Branch</label>
                         <select name="branch_id" id="editBranchId" class="form-select">
                             <option value="">- No branch -</option>
-                            <?php foreach ($branchOptions as $opt): ?>
-                                <option value="<?= e((string) $opt['value']); ?>"><?= e((string) $opt['label']); ?></option>
+                            <?php foreach ($branchOptions as $optVal => $optLabel): ?>
+                                <option value="<?= e((string) $optVal); ?>"><?= e((string) $optLabel); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
