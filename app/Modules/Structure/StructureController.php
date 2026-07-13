@@ -693,7 +693,10 @@ final class StructureController extends Controller
             $callback($name, $code, $status, $description, $branchId);
             $this->app->session()->flash('success', 'Record updated successfully.');
         } catch (Throwable $throwable) {
-            $this->app->session()->flash('error', 'Unable to update record: ' . $throwable->getMessage());
+            $message = str_contains($throwable->getMessage(), '1062')
+                ? 'A record with that name already exists. Please use a different name.'
+                : 'Unable to update record: ' . $throwable->getMessage();
+            $this->app->session()->flash('error', $message);
         }
 
         $this->redirect($redirect);
@@ -727,7 +730,10 @@ final class StructureController extends Controller
             $callback($data);
             $this->app->session()->flash('success', $successMessage);
         } catch (Throwable $throwable) {
-            $this->app->session()->flash('error', 'Unable to save record: ' . $throwable->getMessage());
+            $message = str_contains($throwable->getMessage(), '1062')
+                ? 'A record with that name already exists. Please use a different name.'
+                : 'Unable to save record: ' . $throwable->getMessage();
+            $this->app->session()->flash('error', $message);
             $this->app->session()->flash('old_input', $data);
         }
 
