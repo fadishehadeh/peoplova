@@ -2915,14 +2915,21 @@ final class LeaveRepository
         return false;
     }
 
-    public function employeeOptions(): array
+    public function employeeOptions(?int $excludeEmployeeId = null): array
     {
-        return $this->database->fetchAll(
-            "SELECT id, company_id, CONCAT(employee_code, ' - ', CONCAT_WS(' ', first_name, middle_name, last_name)) AS name
-             FROM employees
-             WHERE archived_at IS NULL AND employee_status NOT IN ('archived', 'resigned', 'terminated')
-             ORDER BY first_name ASC, last_name ASC"
-        );
+        $sql = "SELECT id, company_id, CONCAT(employee_code, ' - ', CONCAT_WS(' ', first_name, middle_name, last_name)) AS name
+                FROM employees
+                WHERE archived_at IS NULL AND employee_status NOT IN ('archived', 'resigned', 'terminated')";
+        $params = [];
+
+        if ($excludeEmployeeId !== null) {
+            $sql .= ' AND id <> :exclude_id';
+            $params['exclude_id'] = $excludeEmployeeId;
+        }
+
+        $sql .= ' ORDER BY first_name ASC, last_name ASC';
+
+        return $this->database->fetchAll($sql, $params);
     }
 
     public function findEmployee(int $employeeId): ?array

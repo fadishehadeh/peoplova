@@ -62,7 +62,7 @@ final class LeaveController extends Controller
         try {
             $leaveTypes = $this->repository->activeLeaveTypes();
             $balances = $this->repository->balances($employeeId, (int) date('Y'));
-            $replacementEmployeeOptions = $this->optionMap($this->repository->employeeOptions());
+            $replacementEmployeeOptions = $this->optionMap($this->repository->employeeOptions($employeeId));
         } catch (Throwable $throwable) {
             $this->app->session()->flash('error', 'Unable to load leave request options: ' . $throwable->getMessage());
         }
