@@ -46,7 +46,7 @@ final class Branding
     // Main-tenant branding (DB-backed, fall back to config/env)
     // ------------------------------------------------------------------
 
-    /** Display name of the main tenant, e.g. "G2 Group". */
+    /** Display name of the main tenant, e.g. "Peoplova". */
     public static function name(): string
     {
         $v = self::tenant()['name'] ?? null;
@@ -119,12 +119,12 @@ final class Branding
 
     public static function defaultLogoUrl(): string
     {
-        return self::assetUrl((string) config('app.brand.logo_asset', 'images/g2group.svg'));
+        return url('/assets/images/peoplova-mark.svg');
     }
 
     public static function defaultLogoPath(): ?string
     {
-        $path = base_path('public/assets/' . ltrim((string) config('app.brand.logo_asset', 'images/g2group.svg'), '/'));
+        $path = base_path('public-hr/assets/images/peoplova-mark.svg');
 
         return is_file($path) ? $path : null;
     }
