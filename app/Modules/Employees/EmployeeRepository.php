@@ -662,7 +662,7 @@ final class EmployeeRepository
     {
         $sql = "SELECT id, CONCAT_WS(' ', first_name, middle_name, last_name) AS name
                 FROM employees
-                WHERE archived_at IS NULL AND employee_status IN ('active','on_leave')";
+                WHERE archived_at IS NULL";
         $params = [];
 
         if ($excludeEmployeeId !== null) {
