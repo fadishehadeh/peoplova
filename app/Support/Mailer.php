@@ -35,6 +35,11 @@ final class Mailer
         $fromAddr  = (string) ($this->config['from_address'] ?? '');
         $fromName  = (string) ($this->config['from_name'] ?? 'HR System');
 
+        if ($transport === 'mailjet') {
+            $this->sendRawViaMailjetApi($toEmail, $subject, $rawBody);
+            return;
+        }
+
         $envelope = "From: {$fromName} <{$fromAddr}>\r\n"
             . "To: {$toEmail}\r\n"
             . "Subject: {$subject}\r\n"
@@ -45,6 +50,75 @@ final class Mailer
         } else {
             $headers = "From: {$fromName} <{$fromAddr}>\r\n";
             mail($toEmail, $subject, $rawBody, $headers);
+        }
+    }
+
+    private function sendRawViaMailjetApi(string $toEmail, string $subject, string $rawBody): void
+    {
+        $apiKey    = (string) ($this->config['username'] ?? '');
+        $apiSecret = (string) ($this->config['password'] ?? '');
+        $fromAddr  = (string) ($this->config['from_address'] ?? '');
+        $fromName  = (string) ($this->config['from_name'] ?? 'HR System');
+
+        // Extract HTML part
+        $htmlBody = '';
+        if (preg_match('/Content-Type: text\/html[^\r\n]*\r\n(?:Content-Transfer-Encoding:[^\r\n]*\r\n)?\r\n(.*?)(?:\r\n--)/s', $rawBody, $m)) {
+            $htmlBody = trim($m[1]);
+            if (stripos($rawBody, 'Content-Transfer-Encoding: quoted-printable') !== false) {
+                $htmlBody = quoted_printable_decode($htmlBody);
+            }
+        }
+
+        // Extract attachments
+        $attachments = [];
+        preg_match_all(
+            '/--[^\r\n]+\r\nContent-Type: ([^\r\n]+)\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename="([^"]+)"\r\n\r\n([\s\S]+?)(?=\r\n--|\z)/i',
+            $rawBody,
+            $parts,
+            PREG_SET_ORDER
+        );
+        foreach ($parts as $part) {
+            $attachments[] = [
+                'ContentType'   => trim($part[1]),
+                'Filename'      => trim($part[2]),
+                'Base64Content' => preg_replace('/\s+/', '', $part[3]),
+            ];
+        }
+
+        $message = [
+            'From'     => ['Email' => $fromAddr, 'Name' => $fromName],
+            'To'       => [['Email' => $toEmail]],
+            'Subject'  => $subject,
+            'HTMLPart' => $htmlBody !== '' ? $htmlBody : strip_tags($rawBody),
+            'TextPart' => strip_tags($htmlBody !== '' ? $htmlBody : $rawBody),
+        ];
+
+        if (!empty($attachments)) {
+            $message['Attachments'] = $attachments;
+        }
+
+        $ch = curl_init('https://api.mailjet.com/v3.1/send');
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => json_encode(['Messages' => [$message]]),
+            CURLOPT_USERPWD        => "{$apiKey}:{$apiSecret}",
+            CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+            CURLOPT_TIMEOUT        => 15,
+            CURLOPT_CONNECTTIMEOUT => 10,
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error    = curl_error($ch);
+        curl_close($ch);
+
+        if ($error !== '') {
+            throw new RuntimeException("Mailjet API request failed: {$error}");
+        }
+
+        if ($httpCode < 200 || $httpCode >= 300) {
+            throw new RuntimeException("Mailjet API returned HTTP {$httpCode}: {$response}");
         }
     }
 
