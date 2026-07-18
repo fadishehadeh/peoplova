@@ -47,7 +47,7 @@ $userName    = trim(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '
                 <i class="bi bi-grid-fill"></i>
             </a>
 
-            <?php if (has_role(['super_admin', 'hr_only'])): ?>
+            <?php if (has_role(['super_admin', 'hr_only', 'hr_admin'])): ?>
             <a class="sidebar-rail-icon<?= $railActive(['/employees', '/onboarding', '/offboarding', '/employee-registration']); ?>" href="<?= e(url('/employees')); ?>" title="People">
                 <i class="bi bi-people-fill"></i>
             </a>
@@ -62,7 +62,7 @@ $userName    = trim(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '
             </a>
             <?php endif; ?>
 
-            <?php if (can('leave.approve_team') && !has_role(['super_admin', 'hr_only'])): ?>
+            <?php if (can('leave.approve_team') && !has_role(['super_admin', 'hr_only', 'hr_admin'])): ?>
             <a class="sidebar-rail-icon<?= $railActive(['/leave']); ?>" href="<?= e(url('/leave/approvals')); ?>" title="Approvals">
                 <i class="bi bi-check2-square"></i>
             </a>
@@ -98,7 +98,7 @@ $userName    = trim(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '
                 <i class="bi bi-grid"></i> Dashboard
             </a>
 
-            <?php if (has_role(['super_admin', 'hr_only'])): ?>
+            <?php if (has_role(['super_admin', 'hr_only', 'hr_admin'])): ?>
 
             <?php $peopleId = $nextId(); $peopleOpen = $groupOpen(['/employees', '/onboarding', '/offboarding', '/employee-registration']); ?>
             <div class="sidebar-group">
@@ -184,7 +184,7 @@ $userName    = trim(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '
 
             <?php endif; ?>
 
-            <?php if (can('leave.approve_team') && !has_role(['super_admin', 'hr_only'])): ?>
+            <?php if (can('leave.approve_team') && !has_role(['super_admin', 'hr_only', 'hr_admin'])): ?>
             <a href="<?= e(url('/leave/approvals')); ?>" class="sidebar-link<?= str_starts_with($currentPath, '/leave/approvals') ? ' active' : ''; ?>">
                 <i class="bi bi-check2-square"></i> Approvals
             </a>
@@ -246,7 +246,7 @@ $userName    = trim(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? '
             </div>
             <?php endif; ?>
 
-            <?php if (is_payroll_enabled() && has_role(['super_admin', 'hr_only'])): ?>
+            <?php if (is_payroll_enabled() && has_role(['super_admin', 'hr_only', 'hr_admin'])): ?>
             <?php $payrollId = $nextId(); $payrollOpen = $groupOpen(['/payroll']); ?>
             <div class="sidebar-group">
                 <a class="sidebar-group-toggle<?= $payrollOpen ? '' : ' collapsed'; ?>" href="#<?= e($payrollId); ?>" data-bs-toggle="collapse" aria-expanded="<?= $payrollOpen ? 'true' : 'false'; ?>">
