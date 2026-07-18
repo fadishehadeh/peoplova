@@ -19,7 +19,7 @@ final class DashboardController extends Controller
 
         $view = match ($roleCode) {
             'super_admin' => 'dashboard.super-admin',
-            'hr_only' => 'dashboard.hr-admin',
+            'hr_only', 'hr_admin' => 'dashboard.hr-admin',
             'manager' => 'dashboard.manager',
             default => 'dashboard.employee',
         };
@@ -84,14 +84,14 @@ final class DashboardController extends Controller
                 );
             }
 
-            if (in_array($user['role_code'] ?? '', ['super_admin', 'hr_only'], true)) {
+            if (in_array($user['role_code'] ?? '', ['super_admin', 'hr_only', 'hr_admin'], true)) {
                 $stats['pendingApprovals'] = (int) $db->fetchValue(
                     "SELECT COUNT(*) FROM leave_requests WHERE status IN ('pending_manager','pending_hr')"
                 );
             }
 
             // Pending letter requests — visible to HR, super_admin, and manager roles
-            if (in_array($user['role_code'] ?? '', ['super_admin', 'hr_only', 'manager'], true)) {
+            if (in_array($user['role_code'] ?? '', ['super_admin', 'hr_only', 'hr_admin', 'manager'], true)) {
                 $stats['pendingLetters'] = (int) $db->fetchValue(
                     "SELECT COUNT(*) FROM letter_requests WHERE status = 'pending'"
                 );
