@@ -16,7 +16,7 @@ final class AdminRepository
         $this->database = $database;
     }
 
-    public function listUsers(string $search = '', string $roleId = 'all', string $status = 'all'): array
+    public function listUsers(string $search = '', string $roleId = 'all', string $status = 'all', bool $isSuperAdmin = false): array
     {
         $sql = "SELECT u.id, u.role_id, u.username, u.email, u.first_name, u.last_name, u.status, u.must_change_password,
                        r.name AS role_name, r.code AS role_code,
@@ -26,6 +26,10 @@ final class AdminRepository
                 INNER JOIN roles r ON r.id = u.role_id
                 LEFT JOIN employees e ON e.user_id = u.id
                 WHERE 1 = 1";
+
+        if (!$isSuperAdmin) {
+            $sql .= " AND r.code != 'super_admin'";
+        }
         $params = [];
 
         if ($roleId !== 'all' && ctype_digit($roleId)) {

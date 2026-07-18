@@ -29,7 +29,9 @@ final class AdminController extends Controller
         $status = trim((string) $request->input('status', 'all'));
 
         try {
-            $users = $this->repository->listUsers($search, $roleId, $status);
+            $currentUser = $this->app->auth()->user();
+            $isSuperAdmin = ($currentUser['role_code'] ?? '') === 'super_admin';
+            $users = $this->repository->listUsers($search, $roleId, $status, $isSuperAdmin);
             $roles = $this->repository->roleOptions();
         } catch (Throwable $throwable) {
             $users = [];
