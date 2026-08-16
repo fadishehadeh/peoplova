@@ -1,6 +1,6 @@
 # Peoplova HR - Project Reference
 
-**Last updated:** 2026-08-09
+**Last updated:** 2026-08-16
 **Live URL:** https://peoplova.com
 **GitHub:** https://github.com/fadishehadeh/peoplova
 **Owner:** Fadi Shehadeh (fshehadeh@gmail.com)
@@ -28,6 +28,59 @@
 
 ---
 
+## SSH Access
+
+| Field | Value |
+|-------|-------|
+| Host | 68.65.120.179 |
+| Port | 21098 |
+| User | clanumsr |
+| SSH Key | ~/.ssh/peoplova_deploy3 |
+| Web root | /home/clanumsr/peoplova/public-hr/ |
+| Git repo | /home/clanumsr/peoplova/ |
+
+```bash
+# Connect
+ssh -i ~/.ssh/peoplova_deploy3 -o StrictHostKeyChecking=no -o BatchMode=yes -p 21098 clanumsr@68.65.120.179
+
+# Deploy (run from local repo)
+git push origin main
+ssh -i ~/.ssh/peoplova_deploy3 -o StrictHostKeyChecking=no -o BatchMode=yes -p 21098 clanumsr@68.65.120.179 "cd /home/clanumsr/peoplova && git pull origin main"
+
+# Upload a single file
+scp -i ~/.ssh/peoplova_deploy3 -o StrictHostKeyChecking=no -P 21098 local/file.ext clanumsr@68.65.120.179:/home/clanumsr/peoplova/public-hr/path/
+```
+
+---
+
+## Database (Live)
+
+| Field | Value |
+|-------|-------|
+| DB name | clanumsr_peoplova |
+| DB user | clanumsr_peoplovausr |
+| DB password | rX6)%WMrrD4Vx]5, |
+| Careers DB | clanumsr_peoplovacareers |
+
+```bash
+# Run a query on live server
+ssh -i ~/.ssh/peoplova_deploy3 -o StrictHostKeyChecking=no -o BatchMode=yes -p 21098 clanumsr@68.65.120.179 \
+  "mysql -u clanumsr_peoplovausr -prX6\)%WMrrD4Vx\]5, clanumsr_peoplova -e \"YOUR QUERY;\" 2>/dev/null"
+```
+
+---
+
+## Email (Mailjet)
+
+| Field | Value |
+|-------|-------|
+| API Key | cbc5bc665edc291096025dc9ee5ea4b0 |
+| API Secret | 3d57a3168f71357dc93ba28037954119 |
+| Transport | mailjet (set in .env on live server) |
+| From name | Peoplova HR |
+
+---
+
 ## Architecture
 
 ### Stack
@@ -44,7 +97,7 @@ public-hr/index.php -> bootstrap.php -> Router -> Middleware -> Controller -> Vi
 ```
 
 ### Entry Points
-- `public-hr/index.php` - HR portal (hr.peoplova.com / peoplova.com)
+- `public-hr/index.php` - HR portal (peoplova.com)
 - `public-careers/index.php` - Careers portal (careers.peoplova.com)
 
 ### Databases
@@ -57,12 +110,13 @@ app/
   Core/           - Router, Controller, Auth, Database, Middleware
   Modules/        - Feature modules (each has Controllers/, Models/, Views/)
   Views/          - Shared layouts and partials
-  Support/        - Helpers, Encryption, Mailer
+  Support/        - Helpers, Encryption, Mailer, Branding
 config/           - database.php, app.php, careers_db.php
 routes/           - One file per module (admin.php, leaves.php, employees.php...)
 public-hr/        - Document root for HR portal
   assets/css/     - app.css (all custom styles + CSS variables)
-  assets/images/  - Logo files
+  assets/images/  - Logo SVG files
+  assets/uploads/ - Company logos uploaded via UI
 database/         - Schema SQL files and migrations
 scripts/          - Cron job scripts
 ```
@@ -130,39 +184,14 @@ Cannot access: System Settings, Roles & Permissions, Resilience/Backups
 
 ---
 
-## Deployment
-
-### Server Details
-- **Host:** Namecheap shared hosting (LiteSpeed)
-- **IP:** 68.65.120.179
-- **SSH port:** 21098
-- **SSH user:** clanumsr
-- **SSH key:** `~/.ssh/peoplova_deploy3`
-- **Web root:** `/home/clanumsr/peoplova/public-hr/`
-- **Git repo on server:** `/home/clanumsr/peoplova/`
-
-### Deploy Command
-```bash
-git push origin main
-ssh -i ~/.ssh/peoplova_deploy3 -o StrictHostKeyChecking=no -o BatchMode=yes -p 21098 clanumsr@68.65.120.179 "cd /home/clanumsr/peoplova && git pull origin main"
-```
-
-### Database (Live)
-- **DB name:** clanumsr_peoplova
-- **DB user:** clanumsr_peoplovausr
-- Credentials stored in `.env` (not in repo)
-
-### Caching
-- LiteSpeed caching is disabled for all PHP pages via `Cache-Control: no-store` headers (set in `bootstrap.php`)
-
----
-
 ## Branding
 
 - **Brand color:** `#FF3D33` (red/orange-red)
 - **CSS variables:** `--brand-primary`, `--brand-primary-dark`, `--brand-primary-soft`
 - **Defined in:** `public-hr/assets/css/app.css` (line 1, `:root {}`)
-- **Logo:** `public-hr/assets/images/peoplova-mark.svg` and `peoplova-mark-white.svg`
+- **Logo (color):** `public-hr/assets/images/peoplova-mark.svg`
+- **Logo (white):** `public-hr/assets/images/peoplova-mark-white.svg`
+- **Branding class:** `app/Support/Branding.php` - reads company name, tagline, logo from `companies` table where `is_main_tenant=1`; falls back to SVG files
 
 ---
 
@@ -207,9 +236,31 @@ php /home/clanumsr/peoplova/scripts/process-escalations.php
 
 ## Client Forks
 
-| Client | Repo | Status |
-|--------|------|--------|
-| Byblos Printing SAL | https://github.com/fadishehadeh/peoplova-byblos | In progress |
+| Client | Repo | Local path | Status |
+|--------|------|------------|--------|
+| Byblos Printing SAL | https://github.com/fadishehadeh/peoplova-byblos | C:\xampp\htdocs\byblos-hr | In progress - branding done, hosting TBD |
+
+### Byblos Brand Colors
+- Primary: `#5B8DB8` (steel blue)
+- Dark: `#4A7BA6`
+- Soft: `#E8F0F7`
+
+### Pulling upstream fixes into a client fork
+```bash
+cd C:\xampp\htdocs\byblos-hr
+git fetch upstream
+git merge upstream/main
+```
+
+---
+
+## Coding Rules (enforced in all sessions)
+
+- Never use em dash character (causes encoding corruption on live server)
+- Never use smart/curly quotes in PHP files (causes silent runtime errors)
+- Always use HTML entities in HTML files (no special Unicode characters)
+- All DB queries via PDO prepared statements only
+- No raw query interpolation ever
 
 ---
 
@@ -219,10 +270,34 @@ All changes in reverse chronological order.
 
 ---
 
+### 2026-08-16
+
+**Update test guide credentials (peoplova.com/guide.html)**
+- All three accounts updated to use @peoplova.com emails
+- Admin: admin@peoplova.com / Peoplova!234
+- Manager: manager@peoplova.com / Peoplova!234
+- Employee: employee@peoplova.com / Peoplova!234
+- All inline credential hints inside test steps updated to match
+- Uploaded directly to live server via SCP
+
+**Add PROJECT_REFERENCE.md**
+- Created living reference document covering architecture, roles, modules, SSH, DB, changelog
+- Rule: update this file in every commit going forward
+
+**Byblos Printing SAL client fork**
+- Created `C:\xampp\htdocs\byblos-hr\` from peoplova codebase
+- GitHub repo: https://github.com/fadishehadeh/peoplova-byblos
+- Brand colors changed to Byblos blue (#5B8DB8) throughout app.css
+- App name changed to "Byblos HR" in all view files
+- `upstream` remote added pointing to peoplova for pulling future fixes
+- CLAUDE.md created in byblos repo with full client context
+
+---
+
 ### 2026-08-09
 
 **Hide super_admin from user list for non-super-admin roles**
-- `app/Modules/Admin/AdminRepository.php` - added `$isSuperAdmin` param to `listUsers()`; filters out `r.code = 'super_admin'` unless caller is super_admin
+- `app/Modules/Admin/AdminRepository.php` - added `$isSuperAdmin` param to `listUsers()`; filters `r.code != 'super_admin'` unless caller is super_admin
 - `app/Modules/Admin/AdminController.php` - passes `$isSuperAdmin` flag from current session user
 
 **Add hr_admin to sidebar so HR Admin sees full HR menu**
@@ -238,7 +313,7 @@ All changes in reverse chronological order.
 ### 2026-08-07 (approx)
 
 **Fix salary certificate email arriving as raw MIME text**
-- `app/Support/Mailer.php` - added `sendRawViaMailjetApi()` private method; `sendRaw()` now routes through Mailjet API when `MAIL_TRANSPORT=mailjet` instead of falling through to `mail()`; method parses HTML from MIME with regex and extracts base64 PDF attachment
+- `app/Support/Mailer.php` - added `sendRawViaMailjetApi()` private method; `sendRaw()` now routes through Mailjet API when `MAIL_TRANSPORT=mailjet` instead of falling through to `mail()`; parses HTML from MIME with regex, extracts base64 PDF attachment
 
 **Show pending letter requests count on dashboards**
 - `app/Modules/Dashboard/DashboardController.php` - added `pendingLetters` stat for super_admin, hr_only, hr_admin, manager roles
